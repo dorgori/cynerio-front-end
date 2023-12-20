@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import CreateTask from "./components/CreateTask";
+import UpdateTaskStatus from "./components/UpdateTaskStatus";
+import TaskReport from "./components/TaskReport";
+import TaskList from "./components/TaskList";
 
-function App() {
+const App = () => {
+  const [taskListKey, setTaskListKey] = useState(0);
+  const [fetchReportData, setFetchReportData] = useState(false);
+
+  const updateTaskList = () => {
+    setTaskListKey((prevKey) => prevKey + 1);
+  };
+
+  const handleFetchReport = () => {
+    setFetchReportData(true);
+  };
+
+  const handleFetchComplete = () => {
+    setFetchReportData(false); // Reset fetchReportData after fetching is complete
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <CreateTask updateTaskList={updateTaskList} />
+      <UpdateTaskStatus updateTaskList={updateTaskList} />
+      <button onClick={handleFetchReport}>Fetch Task Report</button>
+      <TaskReport
+        fetchReportData={fetchReportData}
+        onFetchComplete={handleFetchComplete}
+      />
+      <TaskList updateKey={taskListKey} />
     </div>
   );
-}
+};
 
 export default App;
